@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ลงทะเบียนผู้ใช้งาน</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+  <style>
+    body {
+      font-family: 'Rubik', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f1f8ff; /* สีพื้นหลังสำรอง */
+      color: #333; /* สีข้อความทั่วไป */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      /* ใส่รูปภาพพื้นหลัง */
+      background-image: url('101560185_xl-scaled.jpg'); /* เปลี่ยนเป็น URL หรือที่อยู่ของรูป */
+      background-size: cover; /* ปรับให้ภาพเต็มหน้าจอ */
+      background-position: center; /* จัดให้อยู่ตรงกลาง */
+      background-repeat: no-repeat; /* ไม่ให้ภาพซ้ำ */
+  }
+  
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: -250px;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background: #00a86b;
+      transition: left 0.3s ease-in-out;
+      padding-top: 60px;
+      color: white;
+    }
+    /* สีตัวอักษรในเมนู*/
+    .sidebar a {
+      display: block;
+      padding: 15px;
+      text-decoration: none;
+      color: white;
+      font-size: 18px;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .sidebar.show {
+      left: 0;
+    }
+
+    /* ปุ่มเมนู */
+    .open-btn {
+      position: fixed;
+      left: 20px;
+      top: 20px;
+      background: #00a86b;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px; /* Increased font size */
+      font-weight: 600; /* Bold font */
+    }
+
+    /* Card */
+    .card {
+      background-color: #edfff1d4;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 420px;
+      text-align: center;
+      margin: 20px;
+    }
+
+    h1 {
+      font-size: 36px; /* ลงทะเบียนผู้ใช้งาน */
+      color: #006a61;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: 20px; /* กรุณากรอกข้อมูลให้ครบถ้วน */
+      color: #000000; 
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .input-field, .role-select {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border: 2px solid #00954d;
+      border-radius: 12px;
+      font-size: 16px; /* Increased font size for inputs */
+      background-color: #ffffff;
+      color: #000000; /* Input text color */
+    }
+    /* ปุ่ม ลงทะเบียน */
+    .button {
+      width: 100%;
+      padding: 14px;
+      background-color: #00a86b;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px; 
+      font-weight: 600; 
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .button:hover {
+      background-color: #00d98a; /* Darker color on hover */
+    }
+
+    .hidden-fields {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .loading {
+      display: none;
+      margin-top: 20px;
+      color: #00a86b;
+      font-weight: 500; /* Increased weight for loading text */
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 14px; /* Smaller font size for footer */
+      color: #00553a; /* Lighter color for footer text */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Open Sidebar Button -->
+  <button class="open-btn" onclick="toggleSidebar()">☰ เมนู</button>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="mySidebar">
+    <a href="home.html">🏠 หน้าหลัก</a>
+    <a href="register.html">📝 ลงทะเบียน</a>
+    <a href="health.html">❤️ สุขภาพ</a>
+    <a href="#" onclick="toggleSidebar()">❌ ปิดเมนู</a>
+  </div>
+
+  <div class="card">
+    <h1>ลงทะเบียนผู้ใช้งาน</h1>
+    <h2>กรุณากรอกข้อมูลให้ครบถ้วน</h2>
+
+    <select class="role-select" id="role" onchange="toggleFields()">
+      <option value="caregiver">ผู้ดูแล</option>
+      <option value="elderly">ผู้สูงอายุ</option>
+    </select>
+
+    <input type="text" class="input-field" id="username" placeholder="ชื่อผู้ใช้" required>
+    <input type="password" class="input-field" id="password" placeholder="รหัสผ่าน" required>
+    <input type="text" class="input-field" id="name" placeholder="ชื่อ" required>
+
+    <!-- Fields สำหรับผู้สูงอายุ -->
+    <div id="elderly-fields" class="hidden-fields">
+      <input type="number" class="input-field" id="age" placeholder="อายุ" required>
+      <select class="input-field" id="gender">
+        <option value="" disabled selected>เลือกเพศ</option>
+        <option value="Male">ชาย</option>
+        <option value="Female">หญิง</option>
+      </select>
+
+      <!-- Dropdown สำหรับเลือกผู้ดูแล จะถูก populate จาก API -->
+      <select class="input-field" id="caregiver-id" required>
+        <option value="" disabled selected>เลือกผู้ดูแล</option>
+      </select>
+    </div>
+
+    <button class="button" onclick="registerUser()">ลงทะเบียน</button>
+    <div class="loading" id="loading">กำลังลงทะเบียน... กรุณารอสักครู่.</div>
+
+    <div class="footer">
+      <p>หากคุณมีข้อสงสัย สามารถติดต่อเราได้ที่ฝ่ายสนับสนุน</p>
+    </div>
+  </div>
+
+  <script>
+    // Toggle Sidebar
+    function toggleSidebar() {
+      document.getElementById("mySidebar").classList.toggle("show");
+    }
+
+    // Populate caregivers from API
+    function populateCaregivers() {
+      const caregiverSelect = document.getElementById('caregiver-id');
+      caregiverSelect.innerHTML = '<option value="" disabled selected>เลือกผู้ดูแล</option>';
+
+      fetch('https://im-i62-231-mini-project-bn.vercel.app/api/caregivers')
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(caregiver => {
+            const option = document.createElement('option');
+            option.value = caregiver.id;
+            option.textContent = caregiver.name;
+            caregiverSelect.appendChild(option);
+          });
+        })
+        .catch(error => {
+          console.error('เกิดข้อผิดพลาดในการดึงข้อมูลผู้ดูแล:', error);
+        });
+    }
+
+    // Call populateCaregivers when DOM loads
+    document.addEventListener('DOMContentLoaded', () => {
+      populateCaregivers();
+    });
+
+    // Toggle fields for elderly
+    function toggleFields() {
+      const role = document.getElementById('role').value;
+      document.getElementById('elderly-fields').style.display = role === 'elderly' ? 'block' : 'none';
+    }
+
+    // Register user
+    function registerUser() {
+      const role = document.getElementById('role').value;
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const name = document.getElementById('name').value.trim();
+
+      // Validate general information
+      if (!username || !password || !name) {
+        alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+        return;
+      }
+
+      const data = {
+        username: username,
+        password: password,
+        name: name,
+        role: role
+      };
+
+      // If elderly, validate and add related data
+      if (role === 'elderly') {
+        const age = document.getElementById('age').value.trim();
+        const gender = document.getElementById('gender').value;
+        const caregiverId = document.getElementById('caregiver-id').value;
+
+        if (!age || isNaN(age) || age <= 0) {
+          alert('กรุณากรอกอายุเป็นจำนวนบวก');
+          return;
+        }
+        if (!gender || !caregiverId) {
+          alert('กรุณากรอกข้อมูลให้ครบถ้วนสำหรับผู้สูงอายุ');
+          return;
+        }
+
+        data.age = age;
+        data.gender = gender;
+        data.caregiver_id = caregiverId;
+      }
+
+      // Show loading indicator
+      document.getElementById('loading').style.display = 'block';
+
+      // Send data to API for registration
+      fetch('https://im-i62-231-mini-project-bn.vercel.app/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('ข้อมูลที่ลงทะเบียน:', data);
+        alert('ลงทะเบียนสำเร็จ!');
+        window.location.href = 'register_success.html';
+      })
+      .catch(error => {
+        console.error('เกิดข้อผิดพลาด:', error);
+        alert('ลงทะเบียนล้มเหลว');
+      })
+      .finally(() => {
+        // Hide loading indicator
+        document.getElementById('loading').style.display = 'none';
+      });
+    }
+  </script>
+</body>
+</html>
