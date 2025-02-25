@@ -13,193 +13,221 @@
 </head>
 <style>
 
-    body {
-        font-family: 'Rubik', sans-serif;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    /* ใส่ภาพพื้นหลังแบบจางลง */
-    body::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: url('01_blood-pressure.jpg'); /* เปลี่ยนเป็น URL ของภาพ */
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        opacity: 0.4; /* ปรับค่าความจางของภาพ (0.0 - 1.0) */
-        z-index: -1; /* ทำให้ภาพอยู่ด้านหลังเนื้อหา */
-    }
-    /* พื้นหลังเมนู */
+body {
+    font-family: 'Rubik', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ใส่ภาพพื้นหลังแบบจางลง */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('01_blood-pressure.jpg'); /* เปลี่ยนเป็น URL ของภาพ */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.4; /* ปรับค่าความจางของภาพ (0.0 - 1.0) */
+    z-index: -1; /* ทำให้ภาพอยู่ด้านหลังเนื้อหา */
+}
+
+/* พื้นหลังเมนู */
+.sidebar {
+    position: fixed;
+    left: -250px;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background: #00a86b;
+    transition: left 0.3s ease-in-out;
+    padding-top: 40px;
+    color: white;
+}
+
+/* ตัวอักษรในเมนู */
+.sidebar a {
+    border: 1px solid rgb(232, 230, 230);
+    display: block;
+    padding: 15px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+/* เลื่อนเมาส์ไปวางในเมนู */
+.sidebar a:hover {
+    background: rgba(165, 30, 30, 0.2);
+}
+
+.sidebar.show {
+    left: 0;
+}
+
+.dashboard-card {
+    background-color: hsl(144, 63%, 70%);
+    border: 1px solid #000000;
+    border-radius: 5px;
+    padding: 6px;
+    margin: 5px;
+    text-align: center;
+    flex: 0;
+    height: 100px;
+}
+
+.charts {
+    margin-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px; /* แก้ไขจาก "10 px" เป็น "10px" */
+}
+
+.chart-container {
+    flex: 1 1 250px; /* ปรับขนาดให้เหมาะสม */
+    max-width: 500px; /* จำกัดขนาดสูงสุด */
+    min-width: 100px;
+    margin: 5px;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: 250px !important; /* กำหนดความสูงไม่ให้ใหญ่เกินไป */
+    max-height: 200px;
+    object-fit: contain; /* ปรับให้ไม่ล้น */
+}
+
+/* Button to open sidebar */
+.open-btn {
+    position: fixed;
+    left: 20px;
+    top: 20px;
+    background: #00a86b;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* ปรับตำแหน่ง Container */
+.container {
+    transition: margin-left 0.3s ease-in-out;
+    margin-left: 0;
+    padding: 20px;
+}
+
+.sidebar.show + .container {
+    margin-left: 250px;
+}
+
+/* Card */
+.card {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 420px;
+    text-align: center;
+    margin: 20px;
+}
+
+h1 {
+    font-size: 32px;
+    color: #022c90;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.input-field,
+.role-select {
+    width: 100%;
+    padding: 14px;
+    margin: 12px 0;
+    border: 2px solid #d3c6fc;
+    border-radius: 12px;
+    font-size: 15px;
+    background-color: #f9f9ff;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.hidden-fields {
+    display: none;
+    margin-top: 20px;
+}
+
+/* กำหนดให้ container มีแถบเลื่อนถ้าข้อมูลเยอะ */
+.container {
+    max-height: 90vh; /* กำหนดให้ความสูงไม่เกิน 90% ของหน้าจอ */
+    overflow-y: auto; /* ให้มีแถบเลื่อนแนวตั้ง */
+}
+
+/* ปรับสไตล์ scrollbar ให้ดูดีขึ้น */
+.container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+.container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+html,
+body {
+    overflow-y: auto;
+}
+
+/* Media Queries สำหรับอุปกรณ์ที่แตกต่างกัน */
+@media (max-width: 768px) {
     .sidebar {
-        position: fixed;
-        left: -250px;
-        top: 0;
-        width: 250px;
-        height: 100%;
-        background: #00a86b;
-        transition: left 0.3s ease-in-out;
-        padding-top: 40px;
-        color: white;
+        width: 200px;
     }
-    /*ตัวอักษรในเมนู*/
-    .sidebar a {
-        border: 1px solid rgb(232, 230, 230); 
-        display: block;
-        padding: 15px;
-        text-decoration: none;
-        color: rgb(255, 255, 255);
-        font-size: 18px;
-        transition: 0.3s;
-    }
-    /*เลื่อนเมาส์ไปวางในเมนู*/
-    .sidebar a:hover {
-        background: rgba(165, 30, 30, 0.2);
-    }
-
-    .sidebar.show {
-        left: 0;
-    }
-
-    .dashboard-card {
-        background-color: hsl(144, 63%, 70%);
-        border: 1px solid #000000;
-        border-radius: 5px;
-        padding: 6px;
-        margin: 5px;
-        text-align: center;
-        flex: 0;
-        height: 100px; 
-    }
-   
-    
-    .charts {
-        margin-top: 50px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap : 10 px;
-    }
-    
-    .chart-container {
-        flex: 1 1 250px; /* ปรับขนาดให้เหมาะสม */
-        max-width: 500px; /* จำกัดขนาดสูงสุด */
-        min-width: 100px;
-        margin: 5px;
-    }
-    
-    .chart-container canvas {
-        width: 100% !important;
-        height: 250px !important; /* กำหนดความสูงไม่ให้ใหญ่เกินไป */
-        max-height: 200px;
-        object-fit: contain; /* ปรับให้ไม่ล้น */
-    }
-    
-    
-    /* Button to open sidebar */
-    .open-btn {
-        position: fixed;
-        left: 20px;
-        top: 20px;
-        background: #00a86b;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-
-    /* ปรับตำแหน่ง Container */
-    .container {
-        transition: margin-left 0.3s ease-in-out;
-        margin-left: 0;
-        padding: 20px;
-    }
-
-    .sidebar.show + .container {
-        margin-left: 250px;
-    }
-    
-    /* Card */
     .card {
-      background-color: #ffffff;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      width: 420px;
-      text-align: center;
-      margin: 20px;
+        width: 90%; /* ปรับขนาดการ์ดให้เต็มความกว้าง */
     }
+}
 
+@media (max-width: 480px) {
+    .sidebar {
+        width: 150px;
+    }
+    .card {
+        width: 95%; /* ปรับขนาดการ์ดให้เต็มความกว้าง */
+    }
     h1 {
-      font-size: 32px;
-      color: #022c90;
-      margin-bottom: 20px;
-      font-weight: 700;
+        font-size: 24px; /* ลดขนาดฟอนต์ในหน้าจอเล็ก */
     }
-
     .input-field, .role-select {
-      width: 100%;
-      padding: 14px;
-      margin: 12px 0;
-      border: 2px solid #d3c6fc;
-      border-radius: 12px;
-      font-size: 15px;
-      background-color: #f9f9ff;
+        font-size: 14px; /* ลดขนาดฟอนต์ในฟิลด์ */
     }
+}
 
-      
-    .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 20px;
-        border-radius: 5px;
-    }
-    
-    
-    .hidden-fields {
-      display: none;
-      margin-top: 20px;
-    }
-    /* กำหนดให้ container มีแถบเลื่อนถ้าข้อมูลเยอะ */
-    .container {
-        max-height: 90vh; /* กำหนดให้ความสูงไม่เกิน 90% ของหน้าจอ */
-        overflow-y: auto;  /* ให้มีแถบเลื่อนแนวตั้ง */
-    }
-
-    /* ปรับสไตล์ scrollbar ให้ดูดีขึ้น */
-    .container::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    .container::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 5px;
-    }
-
-    .container::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 5px;
-    }
-
-    .container::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
-
-    html, body {
-        overflow-y: auto;
-    }
   </style>
 </head>
 <body>
