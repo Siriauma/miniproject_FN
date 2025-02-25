@@ -222,25 +222,25 @@
             <div class="row mb-4">
                 <div class="col-md-3">
                     <div class="dashboard-card">
-                        <h3>Total Records</h3>
+                        <h3>รายการสุขภาพทั้งหมด</h3>
                         <p id="totalRecords">Loading...</p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="dashboard-card">
-                        <h4>Avg Heart Rate</h4>
+                        <h4>ค่าเฉลี่ยอัตราการเต้นหัวใจ</h4>
                         <p id="avgHeartRate">Loading...</p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="dashboard-card">
-                        <h4>Avg Blood Pressure</h4>
+                        <h4>ค่าเฉลี่ยความดันโลหิต</h4>
                         <p id="avgBloodPressure">Loading...</p>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="dashboard-card">
-                        <h4>Avg Temperature</h4>
+                        <h4>ค่าเฉลี่ยอุณหภูมิ</h4>
                         <p id="avgTemperature">Loading...</p>
                     </div>
                 </div>
@@ -248,11 +248,11 @@
 
             <div class="charts">
             <div class="chart-container">
-                <h2>health Chart</h2>
+                <h2>อัตราการเต้นหัวใจของแต่ละบุคคล</h2>
                 <canvas id="healthChart" width="300" height="400"></canvas>
             </div>
             <div class="chart-container">
-                <h2>Average HeartRate Chart</h2>
+                <h2>อัตราการเต้นหัวใจในแต่ละช่วงเวลา</h2>
                 <canvas id="averageHeartRateChart" width="100" height="400"></canvas>
             </div>
 
@@ -267,12 +267,12 @@
                 <thead>
                     <tr>
                         <th>Num</th>
-                        <th>elderly_id</th>
-                        <th>heart_rate</th>
-                        <th>blood_pressure</th>
-                        <th>temperature</th>
-                        <th>recorded_at</th>
-                        <th>action</th>
+                        <th>รหัสผู้สุงอายุ</th>
+                        <th>อัตราการเต้นของหัวใจ</th>
+                        <th>ความดันโลหิต</th>
+                        <th>อุณหภูมิ</th>
+                        <th>บันทึกเมื่อ</th>
+                        <th>การดำเนินการ</th>
                     </tr>
                 </thead>
                 <tbody id="tbl_health_data"></tbody>
@@ -296,15 +296,15 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="form_heart_rate" class="form-label">heart_rate</label>
+                        <label for="form_heart_rate" class="form-label">อัตราการเต้นของหัวใจ</label>
                         <input type="text" id="form_heart_rate" class="form-control">
                     </div>
                     <div class="mb-3">
-                        <label for="form_blood_pressure" class="form-label">blood_pressure</label>
+                        <label for="form_blood_pressure" class="form-label">ค่าความดันโลหิต</label>
                         <input type="text" id="form_blood_pressure" class="form-control">
                     </div>
                     <div class="mb-3">
-                        <label for="form_temperature" class="form-label">temperature</label>
+                        <label for="form_temperature" class="form-label">อุณหภูมิ</label>
                         <input type="text" id="form_temperature" class="form-control">
                     </div>
                 </div>
